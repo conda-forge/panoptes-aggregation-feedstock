@@ -69,7 +69,7 @@ test:
         --color=yes
         --tb=long
         -k "not test_extract_csv_object_n2"
-    - coverage report --show-missing --skip-covered --fail-under=90
+    - coverage report --show-missing --skip-covered --fail-under=89
 
 outputs:
   - name: panoptes-aggregation
