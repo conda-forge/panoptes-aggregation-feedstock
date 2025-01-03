@@ -3,7 +3,7 @@
 {% set PYTHON = PYTHON | default("$PYTHON") %}
 
 package:
-  name: panoptes-aggregation-split
+  name: panoptes-aggregation
   version: {{ version }}
 
 source:
