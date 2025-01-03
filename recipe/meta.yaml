@@ -1,87 +1,83 @@
 {% set version = "4.0.0" %}
-{% set build_number = 0 %}
+
+{% set PYTHON = PYTHON | default("$PYTHON") %}
 
 package:
-  name: panoptes-aggregation-split
+  name: panoptes-aggregation
   version: {{ version }}
 
 source:
-  - url: https://pypi.io/packages/source/p/panoptes-aggregation/panoptes_aggregation-{{ version }}.tar.gz
+  - url: https://pypi.org/packages/source/p/panoptes-aggregation/panoptes_aggregation-{{ version }}.tar.gz
     sha256: 1b8dfddada272dc1467f81ba4b4c3044db63651ca394b1ec5c92a36717f44ec0
   # remove after https://github.com/zooniverse/aggregation-for-caesar/pull/621
   - url: https://raw.githubusercontent.com/zooniverse/aggregation-for-caesar/v{{ version }}/LICENSE
     sha256: fc85c29b067e96700adc99ba87ce934fbc28714cbb328ecba9f390e6db96ea17
 
 build:
+  number: 1
   noarch: python
-  number: {{ build_number }}
+  script:
+    - {{ PYTHON }} -m pip install . -vv --no-deps --ignore-installed --no-build-isolation --disable-pip-version-check
+  entry_points:
+    - panoptes_aggregation = panoptes_aggregation.scripts.aggregation_parser:main
+    - panoptes_aggregation_gui = panoptes_aggregation.scripts.gui:gui
 
 requirements:
   host:
     - pip
-    - python >=3.7
+    - python {{ python_min }}
+    - setuptools
   run:
-    - python >=3.7
+    - beautifulsoup4 >=4.8.1,<4.11
+    - collatex-python >=2.2,<2.3
+    # undeclared by upstream https://github.com/conda-forge/hdbscan-feedstock/issues/46
+    - cython >=0.27
+    - hdbscan >=0.8.20,<0.8.29
+    - lxml >=4.4,<4.10
+    - numpy >=1.21.5,<1.23.2
+    - packaging >=20.1,<21.4
+    - pandas >=1.0.0,<1.4.4
+    - progressbar2 >=3.39,<4.1
+    - python >={{ python_min }}
+    - python-levenshtein >=0.12.0,<0.13
+    - python-slugify >=3.0.0,<6.2
+    - pyyaml >=5.1,<6.1
+    - scikit-learn >=1.0.0,<1.1.3
+    - scipy >=1.2,<1.9.1
+    - shapely >=1.7.1,<1.8.3
+    - werkzeug >=0.14,<2.2.3
+  run_constrained:
+    # remove after relase with https://github.com/scikit-learn-contrib/hdbscan/pull/563
+    - joblib <1.2.0
+
+test:
+  requires:
+    - nose
+    - pip
+    - pytest-cov
+    - python {{ python_min }}
+    - requests
+  imports:
+    - panoptes_aggregation
+  commands:
+    - pip check
+    - panoptes_aggregation --help
+    - coverage run --source panoptes_aggregation --branch -m
+      pytest
+        --pyargs panoptes_aggregation
+        -vv
+        --color=yes
+        --tb=long
+        -k "not test_extract_csv_object_n2"
+    - coverage report --show-missing --skip-covered --fail-under=89
 
 outputs:
   - name: panoptes-aggregation
-    build:
-      noarch: python
-      script: {{ PYTHON }} -m pip install . -vv --no-deps --ignore-installed
-      number: {{ build_number }}
-      entry_points:
-        - panoptes_aggregation = panoptes_aggregation.scripts.aggregation_parser:main
-        - panoptes_aggregation_gui = panoptes_aggregation.scripts.gui:gui
-
-    requirements:
-      host:
-        - pip
-        - python >=3.0
-      run:
-        - beautifulsoup4 >=4.8.1,<4.11
-        - collatex-python >=2.2,<2.3
-        # undeclared by upstream https://github.com/conda-forge/hdbscan-feedstock/issues/46
-        - cython >=0.27
-        - hdbscan >=0.8.20,<0.8.29
-        - lxml >=4.4,<4.10
-        - numpy >=1.21.5,<1.23.2
-        - packaging >=20.1,<21.4
-        - pandas >=1.0.0,<1.4.4
-        - progressbar2 >=3.39,<4.1
-        - python >=3.0
-        - python-levenshtein >=0.12.0,<0.13
-        - python-slugify >=3.0.0,<6.2
-        - pyyaml >=5.1,<6.1
-        - scikit-learn >=1.0.0,<1.1.3
-        - scipy >=1.2,<1.9.1
-        - shapely >=1.7.1,<1.8.3
-        - werkzeug >=0.14,<2.2.3
-      run_constrained:
-        # remove after relase with https://github.com/scikit-learn-contrib/hdbscan/pull/563
-        - joblib <1.2.0
-
-    test:
-      imports:
-        - panoptes_aggregation
-      commands:
-        - pip check
-        - panoptes_aggregation --help
-        - pytest -vv --pyargs panoptes_aggregation --cov panoptes_aggregation --cov-report=term-missing:skip-covered --no-cov-on-fail --cov-fail-under=90 -k "not test_extract_csv_object_n2"
-      requires:
-        - nose
-        - pip
-        - pytest-cov
-        # undeclared
-        - requests
 
   - name: panoptes-aggregation-with-online
     build:
-      noarch: python
-      number: {{ build_number }}
+      noarch: generic
     requirements:
-      host:
-        - pip
-        - python >=3.0
       run:
         - {{ pin_subpackage("panoptes-aggregation", max_pin="x.x.x") }}
         # from sentry-sdk[flask]
@@ -92,38 +88,34 @@ outputs:
         - gunicorn >=20.0,<20.2
         - newrelic >=5.4.0,<7.16.1
         - panoptes-client >=1.1,<1.6
-        - python >=3.0
         - requests >=2.4.2,<2.29
         - sentry-sdk >=0.13.5,<1.10
-
     test:
-      commands:
-        - pip check
       requires:
         - pip
+        - python {{ python_min }}
+      commands:
+        - pip check
     about:
       summary: Aggregation code for Zooniverse panoptes projects. (with [online])
 
   - name: panoptes-aggregation-with-gui
     build:
-      noarch: python
-      number: {{ build_number }}
+      noarch: generic
     requirements:
-      host:
-        - pip
-        - python >=3.0
       run:
         - {{ pin_subpackage("panoptes-aggregation", max_pin="x.x.x") }}
         - gooey >=1.0.3,<1.1
     test:
+      requires:
+        - pip
+        - python {{ python_min }}
       commands:
         - pip check
         # just hangs, probably waiting for a click to exit
         # - xvfb-run panoptes_aggregation_gui --help  # [linux]
         # osx needs "framework build" apparently
         # - panoptes_aggregation_gui --help  # [not linux]
-      requires:
-        - pip
     about:
       summary: Aggregation code for Zooniverse panoptes projects. (with [gui])
 
