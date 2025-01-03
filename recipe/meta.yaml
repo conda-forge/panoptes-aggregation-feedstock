@@ -62,7 +62,13 @@ test:
   commands:
     - pip check
     - panoptes_aggregation --help
-    - coverage run --source panoptes_aggregation --branch -m pytest -vv --color=yes --tb=long -k "not test_extract_csv_object_n2"
+    - coverage run --source panoptes_aggregation --branch -m
+      pytest
+        --pyargs panoptes_aggregation
+        -vv
+        --color=yes
+        --tb=long
+        -k "not test_extract_csv_object_n2"
     - coverage report --show-missing --skip-covered --fail-under=90
 
 outputs:
