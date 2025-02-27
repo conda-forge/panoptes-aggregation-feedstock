@@ -9,11 +9,8 @@ recipe:
   version: ${{ version }}
 
 source:
-  - url: https://pypi.org/packages/source/p/panoptes-aggregation/panoptes_aggregation-${{ version }}.tar.gz
-    sha256: d4d6943912b6859840f78670855eeb03e82d08d73c9407a11153d4bd4ea4ae7a
-  # remove after https://github.com/zooniverse/aggregation-for-caesar/pull/621
-  - url: https://raw.githubusercontent.com/zooniverse/aggregation-for-caesar/v${{ version }}/LICENSE
-    sha256: fc85c29b067e96700adc99ba87ce934fbc28714cbb328ecba9f390e6db96ea17
+  url: https://pypi.org/packages/source/p/panoptes-aggregation/panoptes_aggregation-${{ version }}.tar.gz
+  sha256: d4d6943912b6859840f78670855eeb03e82d08d73c9407a11153d4bd4ea4ae7a
 
 build:
   number: 0
@@ -23,7 +20,6 @@ outputs:
   - package:
       name: panoptes-aggregation
     build:
-      number: 0
       noarch: python
       script:
         - ${{ PYTHON }} -m pip install . -vv --no-deps --ignore-installed --no-build-isolation --disable-pip-version-check
@@ -83,15 +79,16 @@ outputs:
         - flask-cors >=3.0,<5.1
         - flask >=2.3,<3.2
         - flower >=2,<3
-        - gitpython >=3.0.0,<3.
+        - gitpython >=3.0.0,<3.2
         - gunicorn >=20.0,<24.0
         - newrelic >=8.4.0,<10.4
         - panoptes-client >=1.6,<1.7
-        - redis >=5,<6
+        - redis-python >=5,<6
         - requests >=2.28,<2.33
         - sentry-sdk >=2.19,<2.20
         - setuptools >=75.8,<76.0
         - standard-imghdr >=3.13,<4.0
+
 
     tests:
       - python:
