@@ -1,4 +1,4 @@
-{% set version = "4.0.0" %}
+{% set version = "5.0.0" %}
 
 {% set PYTHON = PYTHON | default("$PYTHON") %}
 
@@ -8,13 +8,13 @@ package:
 
 source:
   - url: https://pypi.org/packages/source/p/panoptes-aggregation/panoptes_aggregation-{{ version }}.tar.gz
-    sha256: 1b8dfddada272dc1467f81ba4b4c3044db63651ca394b1ec5c92a36717f44ec0
+    sha256: d4d6943912b6859840f78670855eeb03e82d08d73c9407a11153d4bd4ea4ae7a
   # remove after https://github.com/zooniverse/aggregation-for-caesar/pull/621
   - url: https://raw.githubusercontent.com/zooniverse/aggregation-for-caesar/v{{ version }}/LICENSE
     sha256: fc85c29b067e96700adc99ba87ce934fbc28714cbb328ecba9f390e6db96ea17
 
 build:
-  number: 1
+  number: 0
   noarch: python
   script:
     - {{ PYTHON }} -m pip install . -vv --no-deps --ignore-installed --no-build-isolation --disable-pip-version-check
@@ -62,13 +62,7 @@ test:
   commands:
     - pip check
     - panoptes_aggregation --help
-    - coverage run --source panoptes_aggregation --branch -m
-      pytest
-        --pyargs panoptes_aggregation
-        -vv
-        --color=yes
-        --tb=long
-        -k "not test_extract_csv_object_n2"
+    - coverage run --source panoptes_aggregation --branch -m pytest --pyargs panoptes_aggregation -vv --color=yes --tb=long -k "not test_extract_csv_object_n2"
     - coverage report --show-missing --skip-covered --fail-under=89
 
 outputs:
