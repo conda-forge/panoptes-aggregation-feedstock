@@ -18,20 +18,24 @@ Documentation: https://aggregation-caesar.zooniverse.org/docs
 About panoptes-aggregation-with-gui
 -----------------------------------
 
+Home: https://github.com/zooniverse/aggregation-for-caesar
 
-
-Package license: 
+Package license: Apache-2.0
 
 Summary: Aggregation code for Zooniverse panoptes projects. (with [gui])
+
+Documentation: https://aggregation-caesar.zooniverse.org/docs
 
 About panoptes-aggregation-with-online
 --------------------------------------
 
+Home: https://github.com/zooniverse/aggregation-for-caesar
 
-
-Package license: 
+Package license: Apache-2.0
 
 Summary: Aggregation code for Zooniverse panoptes projects. (with [online])
+
+Documentation: https://aggregation-caesar.zooniverse.org/docs
 
 Current build status
 ====================

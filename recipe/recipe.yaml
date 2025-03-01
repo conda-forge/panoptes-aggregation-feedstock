@@ -1,0 +1,132 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/prefix-dev/recipe-format/main/schema.json
+schema_version: 1
+
+context:
+  version: 5.0.0
+
+recipe:
+  name: panoptes-aggregation
+  version: ${{ version }}
+
+source:
+  url: https://pypi.org/packages/source/p/panoptes-aggregation/panoptes_aggregation-${{ version }}.tar.gz
+  sha256: d4d6943912b6859840f78670855eeb03e82d08d73c9407a11153d4bd4ea4ae7a
+
+build:
+  number: 0
+  noarch: python
+
+outputs:
+  - package:
+      name: panoptes-aggregation
+    build:
+      noarch: python
+      script:
+        - ${{ PYTHON }} -m pip install . -vv --no-deps --ignore-installed --no-build-isolation --disable-pip-version-check
+      python:
+        entry_points:
+          - panoptes_aggregation = panoptes_aggregation.scripts.aggregation_parser:main
+          - panoptes_aggregation_gui = panoptes_aggregation.scripts.gui:gui
+    requirements:
+      host:
+        - pip
+        - python ${{ python_min }}.*
+        - flit-core >=3.2,<4
+      run:
+        - beautifulsoup4 >=4.8.1,<4.13
+        - collatex-python >=2.3,<2.4
+        - lxml >=4.4,<5.4
+        - numpy >=1.26.4,<2.3
+        - packaging >=20.1,<24.3
+        - pandas >=2
+        - progressbar2 >=3.39,<4.6
+        - python >=${{ python_min }}
+        - python-levenshtein >=0.12.0,<0.27
+        - python-slugify >=7.0.0,<8.1
+        - pyyaml >=6.0,<6.1
+        - scikit-learn >=1.3.2,<1.7
+        - scipy >=1.10.0
+        - shapely >=2.0,<2.1
+        - werkzeug >=2.3.0,<3.2
+    tests:
+      - python:
+          pip_check: true
+          python_version: ${{ python_min }}.*
+          imports:
+            - panoptes_aggregation
+      - requirements:
+          run:
+            - pytest
+            - pytest-cov
+            - pytest-subtests
+            - python ${{ python_min }}.*
+            - requests
+        script:
+          - panoptes_aggregation --help
+          - coverage run --source panoptes_aggregation --branch -m pytest --pyargs panoptes_aggregation -vv --color=yes --tb=long -k "not test_extract_csv_object_n2"
+          - coverage report --show-missing --skip-covered --fail-under=86
+
+  - package:
+      name: panoptes-aggregation-with-online
+    build:
+      noarch: generic
+    requirements:
+      run:
+        - ${{ pin_subpackage("panoptes-aggregation", upper_bound="x.x.x") }}
+        - azure-identity >=1,<2
+        - azure-storage-blob >=12,<13
+        - celery >=5.3,<5.5
+        - flask-cors >=3.0,<5.1
+        - flask >=2.3,<3.2
+        - flower >=2,<3
+        - gitpython >=3.0.0,<3.2
+        - gunicorn >=20.0,<24.0
+        - newrelic >=8.4.0,<10.4
+        - panoptes-client >=1.6,<1.7
+        - redis-py >=5,<6
+        - requests >=2.28,<2.33
+        - setuptools >=75.8,<76.0
+        - standard-imghdr >=3.13,<4.0
+        # below are deps of sentry-sdk[flask]
+        - sentry-sdk >=2.19,<2.20
+        - blinker >=1.1
+        - markupsafe
+
+
+    tests:
+      - python:
+          pip_check: true
+          python_version: ${{ python_min }}.*
+          imports:
+            - panoptes_aggregation
+    about:
+      summary: Aggregation code for Zooniverse panoptes projects. (with [online])
+
+  - package:
+      name: panoptes-aggregation-with-gui
+    build:
+      noarch: generic
+    requirements:
+      run:
+        - ${{ pin_subpackage("panoptes-aggregation", upper_bound="x.x.x") }}
+        - gooey >=1.0.8.1,<1.1
+    tests:
+      - python:
+          pip_check: true
+          python_version: ${{ python_min }}.*
+          imports:
+            - panoptes_aggregation
+    about:
+      summary: Aggregation code for Zooniverse panoptes projects. (with [gui])
+
+about:
+  summary: Aggregation code for Zooniverse panoptes projects.
+  license: Apache-2.0
+  license_file: LICENSE
+  homepage: https://github.com/zooniverse/aggregation-for-caesar
+  documentation: https://aggregation-caesar.zooniverse.org/docs
+
+extra:
+  feedstock-name: panoptes-aggregation
+  recipe-maintainers:
+    - bollwyvl
