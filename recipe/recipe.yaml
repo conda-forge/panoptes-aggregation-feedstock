@@ -2,7 +2,7 @@
 schema_version: 1
 
 context:
-  version: 5.0.0
+  version: "5.1.0"
 
 recipe:
   name: panoptes-aggregation
@@ -10,7 +10,7 @@ recipe:
 
 source:
   url: https://pypi.org/packages/source/p/panoptes-aggregation/panoptes_aggregation-${{ version }}.tar.gz
-  sha256: d4d6943912b6859840f78670855eeb03e82d08d73c9407a11153d4bd4ea4ae7a
+  sha256: 383b3f42c43f72e587917912d077379420cdd86015c1ce57619354db13702794
 
 build:
   number: 0
@@ -35,6 +35,7 @@ outputs:
       run:
         - beautifulsoup4 >=4.8.1,<4.13
         - collatex-python >=2.3,<2.4
+        - contourpy >=1.3.0,<1.4.0
         - lxml >=4.4,<5.4
         - numpy >=1.26.4,<2.3
         - packaging >=20.1,<24.3
@@ -47,11 +48,13 @@ outputs:
         - scikit-learn >=1.3.2,<1.7
         - scipy >=1.10.0
         - shapely >=2.0,<2.1
+        - shapelysmooth >=0.2.0,<1.0
         - werkzeug >=2.3.0,<3.2
     tests:
       - python:
           pip_check: true
-          python_version: ${{ python_min }}.*
+          python_version:
+            - ${{ python_min }}.*
           imports:
             - panoptes_aggregation
       - requirements:
@@ -91,12 +94,11 @@ outputs:
         - sentry-sdk >=2.19,<2.20
         - blinker >=1.1
         - markupsafe
-
-
     tests:
       - python:
           pip_check: true
-          python_version: ${{ python_min }}.*
+          python_version:
+            - ${{ python_min }}.*
           imports:
             - panoptes_aggregation
     about:
@@ -113,7 +115,8 @@ outputs:
     tests:
       - python:
           pip_check: true
-          python_version: ${{ python_min }}.*
+          python_version:
+            - ${{ python_min }}.*
           imports:
             - panoptes_aggregation
     about:
