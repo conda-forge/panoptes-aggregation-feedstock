@@ -53,7 +53,8 @@ outputs:
     tests:
       - python:
           pip_check: true
-          python_version: ${{ python_min }}.*
+          python_version:
+            - ${{ python_min }}.*
           imports:
             - panoptes_aggregation
       - requirements:
@@ -93,12 +94,11 @@ outputs:
         - sentry-sdk >=2.19,<2.20
         - blinker >=1.1
         - markupsafe
-
-
     tests:
       - python:
           pip_check: true
-          python_version: ${{ python_min }}.*
+          python_version:
+            - ${{ python_min }}.*
           imports:
             - panoptes_aggregation
     about:
@@ -115,7 +115,8 @@ outputs:
     tests:
       - python:
           pip_check: true
-          python_version: ${{ python_min }}.*
+          python_version:
+            - ${{ python_min }}.*
           imports:
             - panoptes_aggregation
     about:
