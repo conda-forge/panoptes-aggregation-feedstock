@@ -58,7 +58,10 @@ outputs:
       #       - ${{ python_min }}.*
       #     imports:
       #       - panoptes_aggregation
-      - requirements:
+      - files:
+          recipe:
+            - run_test.py
+        requirements:
           run:
             - pip
             - pytest
