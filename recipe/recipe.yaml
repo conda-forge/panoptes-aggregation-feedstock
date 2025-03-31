@@ -2,7 +2,7 @@
 schema_version: 1
 
 context:
-  version: "5.1.0"
+  version: "5.2.0"
 
 recipe:
   name: panoptes-aggregation
@@ -10,7 +10,7 @@ recipe:
 
 source:
   url: https://pypi.org/packages/source/p/panoptes-aggregation/panoptes_aggregation-${{ version }}.tar.gz
-  sha256: 383b3f42c43f72e587917912d077379420cdd86015c1ce57619354db13702794
+  sha256: 8865ff6be5fcf29d105e30456393020cbf8255f665a86228809e1241a17930a3
 
 build:
   number: 0
