@@ -3,6 +3,8 @@ schema_version: 1
 
 context:
   version: "5.2.0"
+  # TODO: remove after e.g. https://github.com/conda-forge/kombu-feedstock/pull/83
+  typing_extensions_check: "4.12.2"
 
 recipe:
   name: panoptes-aggregation
@@ -70,7 +72,7 @@ outputs:
             - python ${{ python_min }}.*
             - requests
             # TODO: remove after e.g. https://github.com/conda-forge/kombu-feedstock/pull/83
-            - typing-extensions ==4.12.2
+            - typing_extensions ${{ typing_extensions_check }}.*
         script:
           - pip check
           - panoptes_aggregation --help
@@ -102,12 +104,21 @@ outputs:
         - blinker >=1.1
         - markupsafe
     tests:
-      - python:
-          pip_check: true
-          python_version:
-            - ${{ python_min }}.*
-          imports:
-            - panoptes_aggregation
+      # TODO: restore after e.g. https://github.com/conda-forge/kombu-feedstock/pull/83
+      # - python:
+      #     pip_check: true
+      #     python_version:
+      #       - ${{ python_min }}.*
+      #     imports:
+      #       - panoptes_aggregation
+      - requirements:
+          run:
+            - pip
+            - python ${{ python_min }}.*
+            # TODO: remove after e.g. https://github.com/conda-forge/kombu-feedstock/pull/83
+            - typing_extensions ${{ typing_extensions_check }}.*
+        script:
+          - pip check
     about:
       summary: Aggregation code for Zooniverse panoptes projects. (with [online])
 
@@ -120,12 +131,21 @@ outputs:
         - ${{ pin_subpackage("panoptes-aggregation", upper_bound="x.x.x") }}
         - gooey >=1.0.8.1,<1.1
     tests:
-      - python:
-          pip_check: true
-          python_version:
-            - ${{ python_min }}.*
-          imports:
-            - panoptes_aggregation
+      # TODO: restore after e.g. https://github.com/conda-forge/kombu-feedstock/pull/83
+      # - python:
+      #     pip_check: true
+      #     python_version:
+      #       - ${{ python_min }}.*
+      #     imports:
+      #       - panoptes_aggregation
+      - requirements:
+          run:
+            - pip
+            - python ${{ python_min }}.*
+            # TODO: remove after e.g. https://github.com/conda-forge/kombu-feedstock/pull/83
+            - typing_extensions ${{ typing_extensions_check }}.*
+        script:
+          - pip check
     about:
       summary: Aggregation code for Zooniverse panoptes projects. (with [gui])
 
