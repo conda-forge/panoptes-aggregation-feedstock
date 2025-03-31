@@ -51,20 +51,25 @@ outputs:
         - shapelysmooth >=0.2.0,<1.0
         - werkzeug >=2.3.0,<3.2
     tests:
-      - python:
-          pip_check: true
-          python_version:
-            - ${{ python_min }}.*
-          imports:
-            - panoptes_aggregation
+      # TODO: restore after e.g. https://github.com/conda-forge/kombu-feedstock/pull/83
+      # - python:
+      #     pip_check: true
+      #     python_version:
+      #       - ${{ python_min }}.*
+      #     imports:
+      #       - panoptes_aggregation
       - requirements:
           run:
+            - pip
             - pytest
             - pytest-cov
             - pytest-subtests
             - python ${{ python_min }}.*
             - requests
+            # TODO: remove after e.g. https://github.com/conda-forge/kombu-feedstock/pull/83
+            - typing-extensions ==4.12.2
         script:
+          - pip check
           - panoptes_aggregation --help
           - coverage run --source panoptes_aggregation --branch -m pytest --pyargs panoptes_aggregation -vv --color=yes --tb=long -k "not test_extract_csv_object_n2"
           - coverage report --show-missing --skip-covered --fail-under=86
