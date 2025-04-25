@@ -2,7 +2,7 @@
 schema_version: 1
 
 context:
-  version: "5.2.0"
+  version: "5.2.1"
   # TODO: remove after e.g. https://github.com/conda-forge/kombu-feedstock/pull/83
   typing_extensions_check: "4.12.2"
 
@@ -12,7 +12,7 @@ recipe:
 
 source:
   url: https://pypi.org/packages/source/p/panoptes-aggregation/panoptes_aggregation-${{ version }}.tar.gz
-  sha256: 8865ff6be5fcf29d105e30456393020cbf8255f665a86228809e1241a17930a3
+  sha256: ea3a2b68ffca52e1527f3ae052956d297472e0b333652da398d69d832c969808
 
 build:
   number: 0
