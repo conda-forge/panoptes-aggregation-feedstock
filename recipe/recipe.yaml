@@ -3,8 +3,7 @@ schema_version: 1
 
 context:
   version: "5.3.0"
-  # TODO: remove after e.g. https://github.com/conda-forge/kombu-feedstock/pull/83
-  typing_extensions_check: "4.12.2"
+  python_check_max: "3.13"
 
 recipe:
   name: panoptes-aggregation
@@ -53,13 +52,12 @@ outputs:
         - shapelysmooth >=0.2.0,<1.0
         - werkzeug >=2.3.0,<3.2
     tests:
-      # TODO: restore after e.g. https://github.com/conda-forge/kombu-feedstock/pull/83
-      # - python:
-      #     pip_check: true
-      #     python_version:
-      #       - ${{ python_min }}.*
-      #     imports:
-      #       - panoptes_aggregation
+      - python:
+          imports: panoptes_aggregation
+          pip_check: true
+          python_version:
+            - ${{ python_min }}.*
+            - ${{ python_check_max }}.*
       - files:
           recipe:
             - run_test.py
@@ -71,8 +69,6 @@ outputs:
             - pytest-subtests
             - python ${{ python_min }}.*
             - requests
-            # TODO: remove after e.g. https://github.com/conda-forge/kombu-feedstock/pull/83
-            - typing_extensions ${{ typing_extensions_check }}.*
         script:
           - pip check
           - panoptes_aggregation --help
@@ -104,21 +100,12 @@ outputs:
         - blinker >=1.1
         - markupsafe
     tests:
-      # TODO: restore after e.g. https://github.com/conda-forge/kombu-feedstock/pull/83
-      # - python:
-      #     pip_check: true
-      #     python_version:
-      #       - ${{ python_min }}.*
-      #     imports:
-      #       - panoptes_aggregation
-      - requirements:
-          run:
-            - pip
-            - python ${{ python_min }}.*
-            # TODO: remove after e.g. https://github.com/conda-forge/kombu-feedstock/pull/83
-            - typing_extensions ${{ typing_extensions_check }}.*
-        script:
-          - pip check
+      - python:
+          imports: panoptes_aggregation
+          pip_check: true
+          python_version:
+            - ${{ python_min }}.*
+            - ${{ python_check_max }}.*
     about:
       summary: Aggregation code for Zooniverse panoptes projects. (with [online])
 
@@ -131,19 +118,16 @@ outputs:
         - ${{ pin_subpackage("panoptes-aggregation", upper_bound="x.x.x") }}
         - gooey >=1.0.8.1,<1.1
     tests:
-      # TODO: restore after e.g. https://github.com/conda-forge/kombu-feedstock/pull/83
-      # - python:
-      #     pip_check: true
-      #     python_version:
-      #       - ${{ python_min }}.*
-      #     imports:
-      #       - panoptes_aggregation
+      - python:
+          imports: panoptes_aggregation
+          pip_check: true
+          python_version:
+            - ${{ python_min }}.*
+            - ${{ python_check_max }}.*
       - requirements:
           run:
             - pip
             - python ${{ python_min }}.*
-            # TODO: remove after e.g. https://github.com/conda-forge/kombu-feedstock/pull/83
-            - typing_extensions ${{ typing_extensions_check }}.*
         script:
           - pip check
     about:
