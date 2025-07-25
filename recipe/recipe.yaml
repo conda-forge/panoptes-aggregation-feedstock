@@ -105,7 +105,9 @@ outputs:
           pip_check: true
           python_version:
             - ${{ python_min }}.*
-            - ${{ python_check_max }}.*
+            # TODO: restore after https://github.com/conda-forge/flower-feedstock/pull/29
+            # - ${{ python_check_max }}.*
+            - 3.12.*
     about:
       summary: Aggregation code for Zooniverse panoptes projects. (with [online])
 
@@ -123,7 +125,9 @@ outputs:
           pip_check: true
           python_version:
             - ${{ python_min }}.*
-            - ${{ python_check_max }}.*
+            # TODO: restore after https://github.com/conda-forge/gooey-feedstock/pull/23
+            # - ${{ python_check_max }}.*
+            - 3.10.*
       - requirements:
           run:
             - pip
